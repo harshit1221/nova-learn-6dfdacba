@@ -118,13 +118,15 @@ export function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle:
                       className="overflow-hidden"
                     >
                       <div className="ml-9 mt-1 space-y-0.5 border-l border-slate-100 pl-3">
-                        {subjectChapters.map((s) => (
-                          <button
-                            key={s}
-                            className="w-full text-left text-xs text-slate-500 hover:text-purple-600 py-1.5"
+                        {SUBJECTS_FULL.map((s) => (
+                          <Link
+                            key={s.id}
+                            to="/subjects/$subjectId"
+                            params={{ subjectId: s.id }}
+                            className="block w-full text-left text-xs text-slate-500 hover:text-purple-600 py-1.5"
                           >
-                            {s}
-                          </button>
+                            {s.name}
+                          </Link>
                         ))}
                       </div>
                     </motion.div>
