@@ -9,10 +9,18 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SubjectsRouteImport } from './routes/subjects'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SubjectsSubjectIdRouteImport } from './routes/subjects.$subjectId'
+import { Route as SubjectsSubjectIdChapterIdRouteImport } from './routes/subjects.$subjectId.$chapterId'
 
+const SubjectsRoute = SubjectsRouteImport.update({
+  id: '/subjects',
+  path: '/subjects',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DashboardRoute = DashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -28,39 +36,86 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SubjectsSubjectIdRoute = SubjectsSubjectIdRouteImport.update({
+  id: '/$subjectId',
+  path: '/$subjectId',
+  getParentRoute: () => SubjectsRoute,
+} as any)
+const SubjectsSubjectIdChapterIdRoute =
+  SubjectsSubjectIdChapterIdRouteImport.update({
+    id: '/$chapterId',
+    path: '/$chapterId',
+    getParentRoute: () => SubjectsSubjectIdRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/checkout': typeof CheckoutRoute
   '/dashboard': typeof DashboardRoute
+  '/subjects': typeof SubjectsRouteWithChildren
+  '/subjects/$subjectId': typeof SubjectsSubjectIdRouteWithChildren
+  '/subjects/$subjectId/$chapterId': typeof SubjectsSubjectIdChapterIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/checkout': typeof CheckoutRoute
   '/dashboard': typeof DashboardRoute
+  '/subjects': typeof SubjectsRouteWithChildren
+  '/subjects/$subjectId': typeof SubjectsSubjectIdRouteWithChildren
+  '/subjects/$subjectId/$chapterId': typeof SubjectsSubjectIdChapterIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/checkout': typeof CheckoutRoute
   '/dashboard': typeof DashboardRoute
+  '/subjects': typeof SubjectsRouteWithChildren
+  '/subjects/$subjectId': typeof SubjectsSubjectIdRouteWithChildren
+  '/subjects/$subjectId/$chapterId': typeof SubjectsSubjectIdChapterIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/checkout' | '/dashboard'
+  fullPaths:
+    | '/'
+    | '/checkout'
+    | '/dashboard'
+    | '/subjects'
+    | '/subjects/$subjectId'
+    | '/subjects/$subjectId/$chapterId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/checkout' | '/dashboard'
-  id: '__root__' | '/' | '/checkout' | '/dashboard'
+  to:
+    | '/'
+    | '/checkout'
+    | '/dashboard'
+    | '/subjects'
+    | '/subjects/$subjectId'
+    | '/subjects/$subjectId/$chapterId'
+  id:
+    | '__root__'
+    | '/'
+    | '/checkout'
+    | '/dashboard'
+    | '/subjects'
+    | '/subjects/$subjectId'
+    | '/subjects/$subjectId/$chapterId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CheckoutRoute: typeof CheckoutRoute
   DashboardRoute: typeof DashboardRoute
+  SubjectsRoute: typeof SubjectsRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/subjects': {
+      id: '/subjects'
+      path: '/subjects'
+      fullPath: '/subjects'
+      preLoaderRoute: typeof SubjectsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dashboard': {
       id: '/dashboard'
       path: '/dashboard'
@@ -82,13 +137,51 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/subjects/$subjectId': {
+      id: '/subjects/$subjectId'
+      path: '/$subjectId'
+      fullPath: '/subjects/$subjectId'
+      preLoaderRoute: typeof SubjectsSubjectIdRouteImport
+      parentRoute: typeof SubjectsRoute
+    }
+    '/subjects/$subjectId/$chapterId': {
+      id: '/subjects/$subjectId/$chapterId'
+      path: '/$chapterId'
+      fullPath: '/subjects/$subjectId/$chapterId'
+      preLoaderRoute: typeof SubjectsSubjectIdChapterIdRouteImport
+      parentRoute: typeof SubjectsSubjectIdRoute
+    }
   }
 }
+
+interface SubjectsSubjectIdRouteChildren {
+  SubjectsSubjectIdChapterIdRoute: typeof SubjectsSubjectIdChapterIdRoute
+}
+
+const SubjectsSubjectIdRouteChildren: SubjectsSubjectIdRouteChildren = {
+  SubjectsSubjectIdChapterIdRoute: SubjectsSubjectIdChapterIdRoute,
+}
+
+const SubjectsSubjectIdRouteWithChildren =
+  SubjectsSubjectIdRoute._addFileChildren(SubjectsSubjectIdRouteChildren)
+
+interface SubjectsRouteChildren {
+  SubjectsSubjectIdRoute: typeof SubjectsSubjectIdRouteWithChildren
+}
+
+const SubjectsRouteChildren: SubjectsRouteChildren = {
+  SubjectsSubjectIdRoute: SubjectsSubjectIdRouteWithChildren,
+}
+
+const SubjectsRouteWithChildren = SubjectsRoute._addFileChildren(
+  SubjectsRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CheckoutRoute: CheckoutRoute,
   DashboardRoute: DashboardRoute,
+  SubjectsRoute: SubjectsRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
