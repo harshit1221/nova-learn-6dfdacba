@@ -9,6 +9,7 @@ import {
   ChevronRight,
   type LucideIcon,
 } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import { SoftCard } from "@/components/shared/SoftCard";
 import { StatIcon } from "@/components/shared/StatIcon";
 import { fadeUp, stagger } from "@/lib/motion";
