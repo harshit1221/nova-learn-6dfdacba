@@ -173,3 +173,102 @@ export async function toggleDailyGoal(goalId: string, done: boolean) {
   // ============================================================
   return delay({ id: goalId, done }, 400);
 }
+
+// ── Learning content (subjects → chapters → lessons) ──────────────
+import {
+  SUBJECTS_FULL,
+  type SubjectFull,
+  type Chapter,
+  CONCEPT_MAP_NODES,
+  SAMPLE_NOTES,
+  SAMPLE_MCQS,
+  SAMPLE_BOOKMARKS,
+  AUTOPSY_RESULT,
+  COGNITIVE_INSIGHTS,
+} from "@/lib/learningData";
+
+export async function getSubject(subjectId: string): Promise<SubjectFull | null> {
+  // ============================================================
+  // TODO: 🚧 REAL API INTEGRATION HERE
+  // Step 1: const res = await fetch(`${BASE_URL}/subjects/${subjectId}`);
+  // Step 2: if (!res.ok) throw new Error("Subject not found");
+  // Step 3: return await res.json() as SubjectFull;
+  // ============================================================
+  const subject = SUBJECTS_FULL.find((s) => s.id === subjectId) ?? null;
+  return delay(subject, 800);
+}
+
+export async function getChapter(
+  subjectId: string,
+  chapterId: string,
+): Promise<{ subject: SubjectFull; chapter: Chapter } | null> {
+  // ============================================================
+  // TODO: 🚧 REAL API INTEGRATION HERE
+  // Step 1: const res = await fetch(`${BASE_URL}/subjects/${subjectId}/chapters/${chapterId}`);
+  // Step 2: return await res.json();
+  // ============================================================
+  const subject = SUBJECTS_FULL.find((s) => s.id === subjectId);
+  if (!subject) return delay(null, 600);
+  const chapter = subject.chapters.find((c) => c.id === chapterId);
+  if (!chapter) return delay(null, 600);
+  return delay({ subject, chapter }, 900);
+}
+
+export async function getLessonBundle() {
+  // ============================================================
+  // TODO: 🚧 REAL API INTEGRATION HERE
+  // Step 1: const res = await fetch(`${BASE_URL}/lessons/${lessonId}/bundle`);
+  // Step 2: return await res.json();
+  // ============================================================
+  return delay(
+    {
+      notes: SAMPLE_NOTES,
+      mcqs: SAMPLE_MCQS,
+      bookmarks: SAMPLE_BOOKMARKS,
+      conceptMap: CONCEPT_MAP_NODES,
+    },
+    700,
+  );
+}
+
+// ── Advanced AI / gamification mocks ──────────────────────────────
+
+export type SocraticReply = { role: "ai" | "user"; text: string };
+export async function askSocratic(history: SocraticReply[], _question: string): Promise<SocraticReply> {
+  // ============================================================
+  // TODO: 🚧 REAL API INTEGRATION HERE
+  // Step 1: const res = await fetch(`${BASE_URL}/ai/socratic`, {
+  //           method: "POST",
+  //           headers: { "Content-Type": "application/json" },
+  //           body: JSON.stringify({ history, question: _question }),
+  //         });
+  // Step 2: return await res.json() as SocraticReply;
+  // ============================================================
+  const followUps = [
+    "Good thought. Now — what changes if the leading coefficient is negative?",
+    "Interesting. Can you try plugging in x = 1 and tell me what you get?",
+    "Almost. What does the sign of the discriminant tell us about the zeros?",
+    "Hmm — what's the *definition* of a zero again? Start there.",
+    "Right direction. Can you generalize that to any quadratic?",
+  ];
+  const text = followUps[history.length % followUps.length];
+  return delay({ role: "ai", text }, 900);
+}
+
+export async function getAutopsy(_testId: string) {
+  // ============================================================
+  // TODO: 🚧 REAL API INTEGRATION HERE
+  // Step 1: const res = await fetch(`${BASE_URL}/tests/${_testId}/autopsy`);
+  // Step 2: return await res.json();
+  // ============================================================
+  return delay(AUTOPSY_RESULT, 1100);
+}
+
+export async function getCognitiveMirror(_userId: string) {
+  // ============================================================
+  // TODO: 🚧 REAL API INTEGRATION HERE
+  // Step 1: const res = await fetch(`${BASE_URL}/users/${_userId}/cognitive-mirror`);
+  // Step 2: return await res.json();
+  // ============================================================
+  return delay(COGNITIVE_INSIGHTS, 900);
+}

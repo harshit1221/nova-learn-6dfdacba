@@ -9,6 +9,7 @@ import {
   ChevronRight,
   type LucideIcon,
 } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import { SoftCard } from "@/components/shared/SoftCard";
 import { StatIcon } from "@/components/shared/StatIcon";
 import { fadeUp, stagger } from "@/lib/motion";
@@ -49,44 +50,49 @@ export function SubjectsGrid({ subjects }: { subjects: Subject[] }) {
         {subjects.map((s) => {
           const Icon = iconMap[s.icon] ?? BookOpen;
           return (
-            <motion.button
+            <motion.div
               key={s.id}
               variants={fadeUp}
               whileHover={{ y: -3 }}
-              className="text-left"
             >
-              <SoftCard className="p-5 hover:shadow-soft-lg transition cursor-pointer">
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex items-center gap-3">
-                    <StatIcon
-                      icon={Icon}
-                      tone={s.color as "purple" | "teal" | "pink" | "amber" | "rose" | "cyan"}
-                    />
-                    <div>
-                      <p className="font-bold text-slate-800">{s.name}</p>
-                      <p className="text-xs text-slate-500 mt-0.5">
-                        {s.chapters} chapters
-                      </p>
+              <Link
+                to="/subjects/$subjectId"
+                params={{ subjectId: s.id }}
+                className="block text-left"
+              >
+                <SoftCard className="p-5 hover:shadow-soft-lg transition cursor-pointer">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      <StatIcon
+                        icon={Icon}
+                        tone={s.color as "purple" | "teal" | "pink" | "amber" | "rose" | "cyan"}
+                      />
+                      <div>
+                        <p className="font-bold text-slate-800">{s.name}</p>
+                        <p className="text-xs text-slate-500 mt-0.5">
+                          {s.chapters} chapters
+                        </p>
+                      </div>
+                    </div>
+                    <ChevronRight className="h-5 w-5 text-slate-300" />
+                  </div>
+                  <div className="mt-4">
+                    <div className="flex items-center justify-between text-xs mb-1.5">
+                      <span className="text-slate-500 font-medium">Progress</span>
+                      <span className="text-slate-700 font-bold">{s.progress}%</span>
+                    </div>
+                    <div className="h-2 rounded-full bg-slate-100 overflow-hidden">
+                      <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: `${s.progress}%` }}
+                        transition={{ duration: 1, ease: "easeOut" }}
+                        className="h-full bg-gradient-to-r from-purple-500 to-purple-400"
+                      />
                     </div>
                   </div>
-                  <ChevronRight className="h-5 w-5 text-slate-300" />
-                </div>
-                <div className="mt-4">
-                  <div className="flex items-center justify-between text-xs mb-1.5">
-                    <span className="text-slate-500 font-medium">Progress</span>
-                    <span className="text-slate-700 font-bold">{s.progress}%</span>
-                  </div>
-                  <div className="h-2 rounded-full bg-slate-100 overflow-hidden">
-                    <motion.div
-                      initial={{ width: 0 }}
-                      animate={{ width: `${s.progress}%` }}
-                      transition={{ duration: 1, ease: "easeOut" }}
-                      className="h-full bg-gradient-to-r from-purple-500 to-purple-400"
-                    />
-                  </div>
-                </div>
-              </SoftCard>
-            </motion.button>
+                </SoftCard>
+              </Link>
+            </motion.div>
           );
         })}
       </motion.div>

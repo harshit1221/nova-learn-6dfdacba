@@ -18,24 +18,24 @@ import {
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "@tanstack/react-router";
+import { SUBJECTS_FULL } from "@/lib/learningData";
 
-const navItems = [
+type NavItem = {
+  id: string;
+  label: string;
+  icon: typeof LayoutDashboard;
+  to?: "/dashboard" | "/subjects" | "/ai-lab";
+  expandable?: boolean;
+};
+
+const navItems: NavItem[] = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, to: "/dashboard" },
-  { id: "subjects", label: "Subjects", icon: BookOpen, expandable: true },
+  { id: "subjects", label: "Subjects", icon: BookOpen, to: "/subjects", expandable: true },
   { id: "tests", label: "Tests", icon: ClipboardList },
-  { id: "ai", label: "AI Doubt Solver", icon: Bot },
+  { id: "ai", label: "AI Doubt Solver", icon: Bot, to: "/ai-lab" },
   { id: "report", label: "Report Card", icon: FileBarChart2 },
   { id: "leaderboard", label: "Leaderboard", icon: Trophy },
   { id: "profile", label: "Profile", icon: User },
-];
-
-const subjectChapters = [
-  "Mathematics",
-  "Science",
-  "English",
-  "Social Studies",
-  "Hindi",
-  "Computer",
 ];
 
 export function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => void }) {
@@ -118,13 +118,15 @@ export function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle:
                       className="overflow-hidden"
                     >
                       <div className="ml-9 mt-1 space-y-0.5 border-l border-slate-100 pl-3">
-                        {subjectChapters.map((s) => (
-                          <button
-                            key={s}
-                            className="w-full text-left text-xs text-slate-500 hover:text-purple-600 py-1.5"
+                        {SUBJECTS_FULL.map((s) => (
+                          <Link
+                            key={s.id}
+                            to="/subjects/$subjectId"
+                            params={{ subjectId: s.id }}
+                            className="block w-full text-left text-xs text-slate-500 hover:text-purple-600 py-1.5"
                           >
-                            {s}
-                          </button>
+                            {s.name}
+                          </Link>
                         ))}
                       </div>
                     </motion.div>
