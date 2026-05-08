@@ -65,9 +65,7 @@ function SubjectsIndex() {
               <h1 className="text-3xl md:text-4xl font-display font-bold text-slate-800">
                 Your subjects
               </h1>
-              <p className="text-slate-500 mt-2">
-                Class 10 syllabus · 6 subjects · 71 chapters
-              </p>
+              <p className="text-slate-500 mt-2">Class 10 syllabus · 6 subjects · 71 chapters</p>
             </div>
             <div className="hidden md:flex items-center gap-2 bg-white rounded-2xl shadow-soft px-4 py-2.5 border border-slate-100 w-72">
               <Search className="h-4 w-4 text-slate-400" />
