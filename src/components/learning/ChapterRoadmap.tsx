@@ -40,7 +40,7 @@ export function ChapterRoadmap({
                   )}
                 />
               )}
-              <ChapterNode chapter={c} onSelect={onSelect} index={i + 1} />
+              <ChapterNode chapter={c} subjectId={subjectId} index={i + 1} />
             </motion.div>
           );
         })}
