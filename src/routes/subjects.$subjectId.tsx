@@ -7,7 +7,7 @@ import { BottomNav } from "@/components/dashboard/BottomNav";
 import { SoftCard } from "@/components/shared/SoftCard";
 import { useAuth } from "@/hooks/useAuth";
 import { getSubject } from "@/services/apiClient";
-import type { SubjectFull, Chapter } from "@/lib/learningData";
+import type { SubjectFull } from "@/lib/learningData";
 import { ChapterRoadmap } from "@/components/learning/ChapterRoadmap";
 
 export const Route = createFileRoute("/subjects/$subjectId")({
@@ -55,13 +55,6 @@ function SubjectDetail() {
     }));
   }, [subject]);
 
-  const handleSelectChapter = (chapter: Chapter & { locked: boolean }) => {
-    if (chapter.locked) return;
-    navigate({
-      to: "/subjects/$subjectId/$chapterId",
-      params: { subjectId, chapterId: chapter.id },
-    });
-  };
 
   return (
     <div className="min-h-screen bg-app-mesh">
@@ -114,8 +107,8 @@ function SubjectDetail() {
               </SoftCard>
 
               <ChapterRoadmap
+                subjectId={subjectId}
                 chapters={chaptersWithLock}
-                onSelect={handleSelectChapter}
               />
             </>
           )}

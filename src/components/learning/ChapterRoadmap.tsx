@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Lock, Check, Play, BookOpen } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import type { Chapter } from "@/lib/learningData";
 import { cn } from "@/lib/utils";
 
@@ -11,11 +12,11 @@ type ChapterWithLock = Chapter & { locked: boolean };
  * Connecting paths use SVG between alternating nodes.
  */
 export function ChapterRoadmap({
+  subjectId,
   chapters,
-  onSelect,
 }: {
+  subjectId: string;
   chapters: ChapterWithLock[];
-  onSelect: (chapter: ChapterWithLock) => void;
 }) {
   return (
     <div className="relative">
@@ -39,7 +40,7 @@ export function ChapterRoadmap({
                   )}
                 />
               )}
-              <ChapterNode chapter={c} onSelect={onSelect} index={i + 1} />
+              <ChapterNode chapter={c} subjectId={subjectId} index={i + 1} />
             </motion.div>
           );
         })}
@@ -50,31 +51,22 @@ export function ChapterRoadmap({
 
 function ChapterNode({
   chapter,
-  onSelect,
+  subjectId,
   index,
 }: {
   chapter: ChapterWithLock;
-  onSelect: (c: ChapterWithLock) => void;
+  subjectId: string;
   index: number;
 }) {
   const completed = chapter.progress >= 100;
   const inProgress = chapter.progress > 0 && chapter.progress < 100;
 
-  return (
-    <motion.button
-      type="button"
-      whileHover={{ scale: chapter.locked ? 1 : 1.01 }}
-      whileTap={{ scale: chapter.locked ? 1 : 0.98 }}
-      onClick={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        if (!chapter.locked) onSelect(chapter);
-      }}
-      disabled={chapter.locked}
+  const inner = (
+    <div
       className={cn(
         "w-full text-left bg-white rounded-3xl p-5 md:p-6 shadow-soft border border-slate-100 transition-all relative overflow-hidden",
         chapter.locked && "opacity-70 cursor-not-allowed",
-        !chapter.locked && "hover:shadow-soft-lg cursor-pointer",
+        !chapter.locked && "hover:shadow-soft-lg cursor-pointer hover:-translate-y-0.5",
       )}
     >
       {/* Decorative blob */}
@@ -167,6 +159,20 @@ function ChapterNode({
           </div>
         )}
       </div>
-    </motion.button>
+    </div>
+  );
+
+  if (chapter.locked) {
+    return <div aria-disabled="true">{inner}</div>;
+  }
+
+  return (
+    <Link
+      to="/subjects/$subjectId/$chapterId"
+      params={{ subjectId, chapterId: chapter.id }}
+      className="block"
+    >
+      {inner}
+    </Link>
   );
 }
