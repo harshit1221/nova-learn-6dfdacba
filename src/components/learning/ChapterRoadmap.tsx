@@ -51,31 +51,22 @@ export function ChapterRoadmap({
 
 function ChapterNode({
   chapter,
-  onSelect,
+  subjectId,
   index,
 }: {
   chapter: ChapterWithLock;
-  onSelect: (c: ChapterWithLock) => void;
+  subjectId: string;
   index: number;
 }) {
   const completed = chapter.progress >= 100;
   const inProgress = chapter.progress > 0 && chapter.progress < 100;
 
-  return (
-    <motion.button
-      type="button"
-      whileHover={{ scale: chapter.locked ? 1 : 1.01 }}
-      whileTap={{ scale: chapter.locked ? 1 : 0.98 }}
-      onClick={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        if (!chapter.locked) onSelect(chapter);
-      }}
-      disabled={chapter.locked}
+  const inner = (
+    <div
       className={cn(
         "w-full text-left bg-white rounded-3xl p-5 md:p-6 shadow-soft border border-slate-100 transition-all relative overflow-hidden",
         chapter.locked && "opacity-70 cursor-not-allowed",
-        !chapter.locked && "hover:shadow-soft-lg cursor-pointer",
+        !chapter.locked && "hover:shadow-soft-lg cursor-pointer hover:-translate-y-0.5",
       )}
     >
       {/* Decorative blob */}
