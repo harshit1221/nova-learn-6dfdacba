@@ -159,6 +159,20 @@ function ChapterNode({
           </div>
         )}
       </div>
-    </motion.button>
+    </div>
+  );
+
+  if (chapter.locked) {
+    return <div aria-disabled="true">{inner}</div>;
+  }
+
+  return (
+    <Link
+      to="/subjects/$subjectId/$chapterId"
+      params={{ subjectId, chapterId: chapter.id }}
+      className="block"
+    >
+      {inner}
+    </Link>
   );
 }
