@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Lock, Check, Play, BookOpen } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import type { Chapter } from "@/lib/learningData";
 import { cn } from "@/lib/utils";
 
