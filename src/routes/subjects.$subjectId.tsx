@@ -7,7 +7,7 @@ import { BottomNav } from "@/components/dashboard/BottomNav";
 import { SoftCard } from "@/components/shared/SoftCard";
 import { useAuth } from "@/hooks/useAuth";
 import { getSubject } from "@/services/apiClient";
-import type { SubjectFull, Chapter } from "@/lib/learningData";
+import type { SubjectFull } from "@/lib/learningData";
 import { ChapterRoadmap } from "@/components/learning/ChapterRoadmap";
 
 export const Route = createFileRoute("/subjects/$subjectId")({
