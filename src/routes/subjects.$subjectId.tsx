@@ -55,13 +55,6 @@ function SubjectDetail() {
     }));
   }, [subject]);
 
-  const handleSelectChapter = (chapter: Chapter & { locked: boolean }) => {
-    if (chapter.locked) return;
-    navigate({
-      to: "/subjects/$subjectId/$chapterId",
-      params: { subjectId, chapterId: chapter.id },
-    });
-  };
 
   return (
     <div className="min-h-screen bg-app-mesh">
