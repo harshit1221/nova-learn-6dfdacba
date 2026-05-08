@@ -12,11 +12,11 @@ type ChapterWithLock = Chapter & { locked: boolean };
  * Connecting paths use SVG between alternating nodes.
  */
 export function ChapterRoadmap({
+  subjectId,
   chapters,
-  onSelect,
 }: {
+  subjectId: string;
   chapters: ChapterWithLock[];
-  onSelect: (chapter: ChapterWithLock) => void;
 }) {
   return (
     <div className="relative">
