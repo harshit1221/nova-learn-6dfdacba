@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, linkOptions, useNavigate } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { ArrowLeft, ChevronRight, Search } from "lucide-react";
 import { Sidebar } from "@/components/dashboard/Sidebar";
@@ -65,9 +65,7 @@ function SubjectsIndex() {
               <h1 className="text-3xl md:text-4xl font-display font-bold text-slate-800">
                 Your subjects
               </h1>
-              <p className="text-slate-500 mt-2">
-                Class 10 syllabus · 6 subjects · 71 chapters
-              </p>
+              <p className="text-slate-500 mt-2">Class 10 syllabus · 6 subjects · 71 chapters</p>
             </div>
             <div className="hidden md:flex items-center gap-2 bg-white rounded-2xl shadow-soft px-4 py-2.5 border border-slate-100 w-72">
               <Search className="h-4 w-4 text-slate-400" />
@@ -91,14 +89,17 @@ function SubjectsIndex() {
                 s.chapters.reduce((acc, c) => acc + c.progress, 0) / total,
               );
               const Icon = iconMap[s.icon] ?? BookOpen;
+              const subjectLink = linkOptions({
+                to: "/subjects/$subjectId",
+                params: { subjectId: s.id },
+              });
               return (
                 <motion.div key={s.id} variants={fadeUp}>
-                  <Link
-                    to="/subjects/$subjectId"
-                    params={{ subjectId: s.id }}
-                    className="block"
-                  >
-                    <SoftCard className="p-6 hover:shadow-soft-lg transition cursor-pointer h-full">
+                  <SoftCard className="p-6 hover:shadow-soft-lg transition h-full">
+                    <Link
+                      {...subjectLink}
+                      className="block rounded-3xl focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-300"
+                    >
                       <div className="flex items-start justify-between gap-3">
                         <StatIcon
                           icon={Icon}
@@ -107,7 +108,7 @@ function SubjectsIndex() {
                         />
                         <ChevronRight className="h-5 w-5 text-slate-300" />
                       </div>
-                      <h3 className="font-display font-bold text-slate-800 mt-4 text-lg">
+                      <h3 className="font-display font-bold text-slate-800 mt-4 text-lg hover:text-purple-600 transition">
                         {s.name}
                       </h3>
                       <p className="text-xs text-slate-500 mt-1">
@@ -127,8 +128,8 @@ function SubjectsIndex() {
                           />
                         </div>
                       </div>
-                    </SoftCard>
-                  </Link>
+                    </Link>
+                  </SoftCard>
                 </motion.div>
               );
             })}

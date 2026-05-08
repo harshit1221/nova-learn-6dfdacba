@@ -9,7 +9,7 @@ import {
   ChevronRight,
   type LucideIcon,
 } from "lucide-react";
-import { Link } from "@tanstack/react-router";
+import { Link, linkOptions } from "@tanstack/react-router";
 import { SoftCard } from "@/components/shared/SoftCard";
 import { StatIcon } from "@/components/shared/StatIcon";
 import { fadeUp, stagger } from "@/lib/motion";
@@ -37,9 +37,7 @@ export function SubjectsGrid({ subjects }: { subjects: Subject[] }) {
     <div>
       <div className="flex items-center justify-between mb-4">
         <h2 className="font-display font-bold text-lg text-slate-800">My Subjects</h2>
-        <button className="text-xs font-semibold text-purple-600 hover:underline">
-          View all
-        </button>
+        <button className="text-xs font-semibold text-purple-600 hover:underline">View all</button>
       </div>
       <motion.div
         variants={stagger}
@@ -49,18 +47,17 @@ export function SubjectsGrid({ subjects }: { subjects: Subject[] }) {
       >
         {subjects.map((s) => {
           const Icon = iconMap[s.icon] ?? BookOpen;
+          const subjectLink = linkOptions({
+            to: "/subjects/$subjectId",
+            params: { subjectId: s.id },
+          });
           return (
-            <motion.div
-              key={s.id}
-              variants={fadeUp}
-              whileHover={{ y: -3 }}
-            >
-              <Link
-                to="/subjects/$subjectId"
-                params={{ subjectId: s.id }}
-                className="block text-left"
-              >
-                <SoftCard className="p-5 hover:shadow-soft-lg transition cursor-pointer">
+            <motion.div key={s.id} variants={fadeUp} whileHover={{ y: -3 }}>
+              <SoftCard className="p-5 hover:shadow-soft-lg transition h-full">
+                <Link
+                  {...subjectLink}
+                  className="block text-left rounded-3xl focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-300"
+                >
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex items-center gap-3">
                       <StatIcon
@@ -68,10 +65,10 @@ export function SubjectsGrid({ subjects }: { subjects: Subject[] }) {
                         tone={s.color as "purple" | "teal" | "pink" | "amber" | "rose" | "cyan"}
                       />
                       <div>
-                        <p className="font-bold text-slate-800">{s.name}</p>
-                        <p className="text-xs text-slate-500 mt-0.5">
-                          {s.chapters} chapters
+                        <p className="font-bold text-slate-800 hover:text-purple-600 transition">
+                          {s.name}
                         </p>
+                        <p className="text-xs text-slate-500 mt-0.5">{s.chapters} chapters</p>
                       </div>
                     </div>
                     <ChevronRight className="h-5 w-5 text-slate-300" />
@@ -90,8 +87,8 @@ export function SubjectsGrid({ subjects }: { subjects: Subject[] }) {
                       />
                     </div>
                   </div>
-                </SoftCard>
-              </Link>
+                </Link>
+              </SoftCard>
             </motion.div>
           );
         })}
