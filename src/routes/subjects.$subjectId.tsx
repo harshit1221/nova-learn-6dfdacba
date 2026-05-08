@@ -114,8 +114,8 @@ function SubjectDetail() {
               </SoftCard>
 
               <ChapterRoadmap
+                subjectId={subjectId}
                 chapters={chaptersWithLock}
-                onSelect={handleSelectChapter}
               />
             </>
           )}
