@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as TestsRouteImport } from './routes/tests'
 import { Route as SubjectsRouteImport } from './routes/subjects'
 import { Route as ReportCardRouteImport } from './routes/report-card'
+import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as LeaderboardRouteImport } from './routes/leaderboard'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as CheckoutRouteImport } from './routes/checkout'
@@ -33,6 +34,11 @@ const SubjectsRoute = SubjectsRouteImport.update({
 const ReportCardRoute = ReportCardRouteImport.update({
   id: '/report-card',
   path: '/report-card',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LeaderboardRoute = LeaderboardRouteImport.update({
@@ -78,6 +84,7 @@ export interface FileRoutesByFullPath {
   '/checkout': typeof CheckoutRoute
   '/dashboard': typeof DashboardRoute
   '/leaderboard': typeof LeaderboardRoute
+  '/profile': typeof ProfileRoute
   '/report-card': typeof ReportCardRoute
   '/subjects': typeof SubjectsRouteWithChildren
   '/tests': typeof TestsRoute
@@ -90,6 +97,7 @@ export interface FileRoutesByTo {
   '/checkout': typeof CheckoutRoute
   '/dashboard': typeof DashboardRoute
   '/leaderboard': typeof LeaderboardRoute
+  '/profile': typeof ProfileRoute
   '/report-card': typeof ReportCardRoute
   '/subjects': typeof SubjectsRouteWithChildren
   '/tests': typeof TestsRoute
@@ -103,6 +111,7 @@ export interface FileRoutesById {
   '/checkout': typeof CheckoutRoute
   '/dashboard': typeof DashboardRoute
   '/leaderboard': typeof LeaderboardRoute
+  '/profile': typeof ProfileRoute
   '/report-card': typeof ReportCardRoute
   '/subjects': typeof SubjectsRouteWithChildren
   '/tests': typeof TestsRoute
@@ -117,6 +126,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/dashboard'
     | '/leaderboard'
+    | '/profile'
     | '/report-card'
     | '/subjects'
     | '/tests'
@@ -129,6 +139,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/dashboard'
     | '/leaderboard'
+    | '/profile'
     | '/report-card'
     | '/subjects'
     | '/tests'
@@ -141,6 +152,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/dashboard'
     | '/leaderboard'
+    | '/profile'
     | '/report-card'
     | '/subjects'
     | '/tests'
@@ -154,6 +166,7 @@ export interface RootRouteChildren {
   CheckoutRoute: typeof CheckoutRoute
   DashboardRoute: typeof DashboardRoute
   LeaderboardRoute: typeof LeaderboardRoute
+  ProfileRoute: typeof ProfileRoute
   ReportCardRoute: typeof ReportCardRoute
   SubjectsRoute: typeof SubjectsRouteWithChildren
   TestsRoute: typeof TestsRoute
@@ -180,6 +193,13 @@ declare module '@tanstack/react-router' {
       path: '/report-card'
       fullPath: '/report-card'
       preLoaderRoute: typeof ReportCardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/leaderboard': {
@@ -263,6 +283,7 @@ const rootRouteChildren: RootRouteChildren = {
   CheckoutRoute: CheckoutRoute,
   DashboardRoute: DashboardRoute,
   LeaderboardRoute: LeaderboardRoute,
+  ProfileRoute: ProfileRoute,
   ReportCardRoute: ReportCardRoute,
   SubjectsRoute: SubjectsRouteWithChildren,
   TestsRoute: TestsRoute,
@@ -270,3 +291,12 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}
