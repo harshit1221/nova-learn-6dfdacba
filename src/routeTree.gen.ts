@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TestsRouteImport } from './routes/tests'
 import { Route as SubjectsRouteImport } from './routes/subjects'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as CheckoutRouteImport } from './routes/checkout'
@@ -17,6 +18,11 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as SubjectsSubjectIdRouteImport } from './routes/subjects.$subjectId'
 import { Route as SubjectsSubjectIdChapterIdRouteImport } from './routes/subjects.$subjectId.$chapterId'
 
+const TestsRoute = TestsRouteImport.update({
+  id: '/tests',
+  path: '/tests',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SubjectsRoute = SubjectsRouteImport.update({
   id: '/subjects',
   path: '/subjects',
@@ -60,6 +66,7 @@ export interface FileRoutesByFullPath {
   '/checkout': typeof CheckoutRoute
   '/dashboard': typeof DashboardRoute
   '/subjects': typeof SubjectsRouteWithChildren
+  '/tests': typeof TestsRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRouteWithChildren
   '/subjects/$subjectId/$chapterId': typeof SubjectsSubjectIdChapterIdRoute
 }
@@ -69,6 +76,7 @@ export interface FileRoutesByTo {
   '/checkout': typeof CheckoutRoute
   '/dashboard': typeof DashboardRoute
   '/subjects': typeof SubjectsRouteWithChildren
+  '/tests': typeof TestsRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRouteWithChildren
   '/subjects/$subjectId/$chapterId': typeof SubjectsSubjectIdChapterIdRoute
 }
@@ -79,6 +87,7 @@ export interface FileRoutesById {
   '/checkout': typeof CheckoutRoute
   '/dashboard': typeof DashboardRoute
   '/subjects': typeof SubjectsRouteWithChildren
+  '/tests': typeof TestsRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRouteWithChildren
   '/subjects/$subjectId/$chapterId': typeof SubjectsSubjectIdChapterIdRoute
 }
@@ -90,6 +99,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/dashboard'
     | '/subjects'
+    | '/tests'
     | '/subjects/$subjectId'
     | '/subjects/$subjectId/$chapterId'
   fileRoutesByTo: FileRoutesByTo
@@ -99,6 +109,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/dashboard'
     | '/subjects'
+    | '/tests'
     | '/subjects/$subjectId'
     | '/subjects/$subjectId/$chapterId'
   id:
@@ -108,6 +119,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/dashboard'
     | '/subjects'
+    | '/tests'
     | '/subjects/$subjectId'
     | '/subjects/$subjectId/$chapterId'
   fileRoutesById: FileRoutesById
@@ -118,10 +130,18 @@ export interface RootRouteChildren {
   CheckoutRoute: typeof CheckoutRoute
   DashboardRoute: typeof DashboardRoute
   SubjectsRoute: typeof SubjectsRouteWithChildren
+  TestsRoute: typeof TestsRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/tests': {
+      id: '/tests'
+      path: '/tests'
+      fullPath: '/tests'
+      preLoaderRoute: typeof TestsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/subjects': {
       id: '/subjects'
       path: '/subjects'
@@ -203,6 +223,7 @@ const rootRouteChildren: RootRouteChildren = {
   CheckoutRoute: CheckoutRoute,
   DashboardRoute: DashboardRoute,
   SubjectsRoute: SubjectsRouteWithChildren,
+  TestsRoute: TestsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
