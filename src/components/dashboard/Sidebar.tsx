@@ -24,18 +24,18 @@ type NavItem = {
   id: string;
   label: string;
   icon: typeof LayoutDashboard;
-  to?: "/dashboard" | "/subjects" | "/ai-lab";
+  to?: "/dashboard" | "/subjects" | "/ai-lab" | "/tests" | "/report-card" | "/leaderboard" | "/profile";
   expandable?: boolean;
 };
 
 const navItems: NavItem[] = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, to: "/dashboard" },
   { id: "subjects", label: "Subjects", icon: BookOpen, to: "/subjects", expandable: true },
-  { id: "tests", label: "Tests", icon: ClipboardList },
+  { id: "tests", label: "Tests", icon: ClipboardList, to: "/tests" },
   { id: "ai", label: "AI Doubt Solver", icon: Bot, to: "/ai-lab" },
-  { id: "report", label: "Report Card", icon: FileBarChart2 },
-  { id: "leaderboard", label: "Leaderboard", icon: Trophy },
-  { id: "profile", label: "Profile", icon: User },
+  { id: "report", label: "Report Card", icon: FileBarChart2, to: "/report-card" },
+  { id: "leaderboard", label: "Leaderboard", icon: Trophy, to: "/leaderboard" },
+  { id: "profile", label: "Profile", icon: User, to: "/profile" },
 ];
 
 export function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => void }) {
