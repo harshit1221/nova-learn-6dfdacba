@@ -199,7 +199,6 @@ function TestsPage() {
                       </span>
                     )}
                     <GradientButton
-                      size="sm"
                       variant={t.status === "completed" ? "ghost" : "primary"}
                       disabled={t.status === "upcoming"}
                     >
