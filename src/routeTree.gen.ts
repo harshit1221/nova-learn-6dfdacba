@@ -11,6 +11,8 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TestsRouteImport } from './routes/tests'
 import { Route as SubjectsRouteImport } from './routes/subjects'
+import { Route as ReportCardRouteImport } from './routes/report-card'
+import { Route as LeaderboardRouteImport } from './routes/leaderboard'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as AiLabRouteImport } from './routes/ai-lab'
@@ -26,6 +28,16 @@ const TestsRoute = TestsRouteImport.update({
 const SubjectsRoute = SubjectsRouteImport.update({
   id: '/subjects',
   path: '/subjects',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReportCardRoute = ReportCardRouteImport.update({
+  id: '/report-card',
+  path: '/report-card',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LeaderboardRoute = LeaderboardRouteImport.update({
+  id: '/leaderboard',
+  path: '/leaderboard',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardRoute = DashboardRouteImport.update({
@@ -65,6 +77,8 @@ export interface FileRoutesByFullPath {
   '/ai-lab': typeof AiLabRoute
   '/checkout': typeof CheckoutRoute
   '/dashboard': typeof DashboardRoute
+  '/leaderboard': typeof LeaderboardRoute
+  '/report-card': typeof ReportCardRoute
   '/subjects': typeof SubjectsRouteWithChildren
   '/tests': typeof TestsRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRouteWithChildren
@@ -75,6 +89,8 @@ export interface FileRoutesByTo {
   '/ai-lab': typeof AiLabRoute
   '/checkout': typeof CheckoutRoute
   '/dashboard': typeof DashboardRoute
+  '/leaderboard': typeof LeaderboardRoute
+  '/report-card': typeof ReportCardRoute
   '/subjects': typeof SubjectsRouteWithChildren
   '/tests': typeof TestsRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRouteWithChildren
@@ -86,6 +102,8 @@ export interface FileRoutesById {
   '/ai-lab': typeof AiLabRoute
   '/checkout': typeof CheckoutRoute
   '/dashboard': typeof DashboardRoute
+  '/leaderboard': typeof LeaderboardRoute
+  '/report-card': typeof ReportCardRoute
   '/subjects': typeof SubjectsRouteWithChildren
   '/tests': typeof TestsRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRouteWithChildren
@@ -98,6 +116,8 @@ export interface FileRouteTypes {
     | '/ai-lab'
     | '/checkout'
     | '/dashboard'
+    | '/leaderboard'
+    | '/report-card'
     | '/subjects'
     | '/tests'
     | '/subjects/$subjectId'
@@ -108,6 +128,8 @@ export interface FileRouteTypes {
     | '/ai-lab'
     | '/checkout'
     | '/dashboard'
+    | '/leaderboard'
+    | '/report-card'
     | '/subjects'
     | '/tests'
     | '/subjects/$subjectId'
@@ -118,6 +140,8 @@ export interface FileRouteTypes {
     | '/ai-lab'
     | '/checkout'
     | '/dashboard'
+    | '/leaderboard'
+    | '/report-card'
     | '/subjects'
     | '/tests'
     | '/subjects/$subjectId'
@@ -129,6 +153,8 @@ export interface RootRouteChildren {
   AiLabRoute: typeof AiLabRoute
   CheckoutRoute: typeof CheckoutRoute
   DashboardRoute: typeof DashboardRoute
+  LeaderboardRoute: typeof LeaderboardRoute
+  ReportCardRoute: typeof ReportCardRoute
   SubjectsRoute: typeof SubjectsRouteWithChildren
   TestsRoute: typeof TestsRoute
 }
@@ -147,6 +173,20 @@ declare module '@tanstack/react-router' {
       path: '/subjects'
       fullPath: '/subjects'
       preLoaderRoute: typeof SubjectsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/report-card': {
+      id: '/report-card'
+      path: '/report-card'
+      fullPath: '/report-card'
+      preLoaderRoute: typeof ReportCardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/leaderboard': {
+      id: '/leaderboard'
+      path: '/leaderboard'
+      fullPath: '/leaderboard'
+      preLoaderRoute: typeof LeaderboardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard': {
@@ -222,9 +262,20 @@ const rootRouteChildren: RootRouteChildren = {
   AiLabRoute: AiLabRoute,
   CheckoutRoute: CheckoutRoute,
   DashboardRoute: DashboardRoute,
+  LeaderboardRoute: LeaderboardRoute,
+  ReportCardRoute: ReportCardRoute,
   SubjectsRoute: SubjectsRouteWithChildren,
   TestsRoute: TestsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}
