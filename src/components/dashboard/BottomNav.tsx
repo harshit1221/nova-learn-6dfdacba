@@ -6,8 +6,8 @@ const items = [
   { label: "Home", icon: LayoutDashboard, to: "/dashboard" as const, match: ["/dashboard"] },
   { label: "Subjects", icon: BookOpen, to: "/subjects" as const, match: ["/subjects"] },
   { label: "AI Lab", icon: Bot, to: "/ai-lab" as const, match: ["/ai-lab"] },
-  { label: "Arena", icon: Trophy, to: "/dashboard" as const, match: ["/arena"] },
-  { label: "Profile", icon: User, to: "/dashboard" as const, match: ["/profile"] },
+  { label: "Arena", icon: Trophy, to: "/leaderboard" as const, match: ["/leaderboard"] },
+  { label: "Profile", icon: User, to: "/profile" as const, match: ["/profile"] },
 ];
 
 export function BottomNav() {
