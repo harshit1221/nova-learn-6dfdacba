@@ -168,7 +168,7 @@ function ChapterNode({
 
   return (
     <Link
-      to="/subjects/$subjectId/$chapterId"
+      to="/player/$subjectId/$chapterId"
       params={{ subjectId, chapterId: chapter.id }}
       className="block"
     >
