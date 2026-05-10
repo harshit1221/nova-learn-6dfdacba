@@ -86,13 +86,22 @@ function ChapterScreen() {
         <Sidebar collapsed={collapsed} onToggle={() => setCollapsed((v) => !v)} />
 
         <main className="flex-1 min-w-0 pb-24 lg:pb-6">
-          <Link
-            to="/subjects/$subjectId"
-            params={{ subjectId }}
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-slate-500 hover:text-slate-800 mb-4"
-          >
-            <ArrowLeft className="h-4 w-4" /> Back to chapters
-          </Link>
+          <div className="flex items-center justify-between gap-3 mb-4 flex-wrap">
+            <Link
+              to="/subjects/$subjectId"
+              params={{ subjectId }}
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-slate-500 hover:text-slate-800"
+            >
+              <ArrowLeft className="h-4 w-4" /> Back to chapters
+            </Link>
+            <Link
+              to="/player/$subjectId/$chapterId"
+              params={{ subjectId, chapterId }}
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-white bg-gradient-to-r from-purple-500 to-purple-400 px-4 py-2 rounded-2xl shadow-glow hover:shadow-soft-lg transition"
+            >
+              <PlayCircle className="h-4 w-4" /> Open video player
+            </Link>
+          </div>
 
           {!data || !activeLesson ? (
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-6">

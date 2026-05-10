@@ -20,6 +20,7 @@ import { Route as AiLabRouteImport } from './routes/ai-lab'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SubjectsSubjectIdRouteImport } from './routes/subjects.$subjectId'
 import { Route as SubjectsSubjectIdChapterIdRouteImport } from './routes/subjects.$subjectId.$chapterId'
+import { Route as PlayerSubjectIdChapterIdRouteImport } from './routes/player.$subjectId.$chapterId'
 
 const TestsRoute = TestsRouteImport.update({
   id: '/tests',
@@ -77,6 +78,12 @@ const SubjectsSubjectIdChapterIdRoute =
     path: '/$chapterId',
     getParentRoute: () => SubjectsSubjectIdRoute,
   } as any)
+const PlayerSubjectIdChapterIdRoute =
+  PlayerSubjectIdChapterIdRouteImport.update({
+    id: '/player/$subjectId/$chapterId',
+    path: '/player/$subjectId/$chapterId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -89,6 +96,7 @@ export interface FileRoutesByFullPath {
   '/subjects': typeof SubjectsRouteWithChildren
   '/tests': typeof TestsRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRouteWithChildren
+  '/player/$subjectId/$chapterId': typeof PlayerSubjectIdChapterIdRoute
   '/subjects/$subjectId/$chapterId': typeof SubjectsSubjectIdChapterIdRoute
 }
 export interface FileRoutesByTo {
@@ -102,6 +110,7 @@ export interface FileRoutesByTo {
   '/subjects': typeof SubjectsRouteWithChildren
   '/tests': typeof TestsRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRouteWithChildren
+  '/player/$subjectId/$chapterId': typeof PlayerSubjectIdChapterIdRoute
   '/subjects/$subjectId/$chapterId': typeof SubjectsSubjectIdChapterIdRoute
 }
 export interface FileRoutesById {
@@ -116,6 +125,7 @@ export interface FileRoutesById {
   '/subjects': typeof SubjectsRouteWithChildren
   '/tests': typeof TestsRoute
   '/subjects/$subjectId': typeof SubjectsSubjectIdRouteWithChildren
+  '/player/$subjectId/$chapterId': typeof PlayerSubjectIdChapterIdRoute
   '/subjects/$subjectId/$chapterId': typeof SubjectsSubjectIdChapterIdRoute
 }
 export interface FileRouteTypes {
@@ -131,6 +141,7 @@ export interface FileRouteTypes {
     | '/subjects'
     | '/tests'
     | '/subjects/$subjectId'
+    | '/player/$subjectId/$chapterId'
     | '/subjects/$subjectId/$chapterId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -144,6 +155,7 @@ export interface FileRouteTypes {
     | '/subjects'
     | '/tests'
     | '/subjects/$subjectId'
+    | '/player/$subjectId/$chapterId'
     | '/subjects/$subjectId/$chapterId'
   id:
     | '__root__'
@@ -157,6 +169,7 @@ export interface FileRouteTypes {
     | '/subjects'
     | '/tests'
     | '/subjects/$subjectId'
+    | '/player/$subjectId/$chapterId'
     | '/subjects/$subjectId/$chapterId'
   fileRoutesById: FileRoutesById
 }
@@ -170,6 +183,7 @@ export interface RootRouteChildren {
   ReportCardRoute: typeof ReportCardRoute
   SubjectsRoute: typeof SubjectsRouteWithChildren
   TestsRoute: typeof TestsRoute
+  PlayerSubjectIdChapterIdRoute: typeof PlayerSubjectIdChapterIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -251,6 +265,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SubjectsSubjectIdChapterIdRouteImport
       parentRoute: typeof SubjectsSubjectIdRoute
     }
+    '/player/$subjectId/$chapterId': {
+      id: '/player/$subjectId/$chapterId'
+      path: '/player/$subjectId/$chapterId'
+      fullPath: '/player/$subjectId/$chapterId'
+      preLoaderRoute: typeof PlayerSubjectIdChapterIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -287,16 +308,8 @@ const rootRouteChildren: RootRouteChildren = {
   ReportCardRoute: ReportCardRoute,
   SubjectsRoute: SubjectsRouteWithChildren,
   TestsRoute: TestsRoute,
+  PlayerSubjectIdChapterIdRoute: PlayerSubjectIdChapterIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-  }
-}
