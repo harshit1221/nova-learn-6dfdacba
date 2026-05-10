@@ -13,6 +13,7 @@ import { Link, linkOptions } from "@tanstack/react-router";
 import { SoftCard } from "@/components/shared/SoftCard";
 import { StatIcon } from "@/components/shared/StatIcon";
 import { fadeUp, stagger } from "@/lib/motion";
+import { SUBJECTS_FULL } from "@/lib/learningData";
 
 const iconMap: Record<string, LucideIcon> = {
   Sigma,
@@ -47,9 +48,12 @@ export function SubjectsGrid({ subjects }: { subjects: Subject[] }) {
       >
         {subjects.map((s) => {
           const Icon = iconMap[s.icon] ?? BookOpen;
+          const firstChapterId = SUBJECTS_FULL.find((subject) => subject.id === s.id)?.chapters[0]?.id;
           const subjectLink = linkOptions({
-            to: "/subjects/$subjectId",
-            params: { subjectId: s.id },
+            to: firstChapterId ? "/player/$subjectId/$chapterId" : "/subjects/$subjectId",
+            params: firstChapterId
+              ? { subjectId: s.id, chapterId: firstChapterId }
+              : { subjectId: s.id },
           });
           return (
             <motion.div key={s.id} variants={fadeUp} whileHover={{ y: -3 }}>
