@@ -121,32 +121,77 @@ export function SubjectsGrid({ subjects }: { subjects: Subject[] }) {
 
                 {/* Continue learning CTA */}
                 {continueLink && (
-                  <div className="relative mt-4 pt-4 border-t border-dashed border-slate-200/80">
-                    <Link
-                      {...continueLink}
-                      className="flex items-center justify-between gap-3 rounded-2xl p-2.5 -m-1 hover:bg-purple-50/60 transition group/cta"
+                  <motion.div
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.15, duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                    className="relative mt-4 pt-4 border-t border-dashed border-slate-200/80"
+                  >
+                    <motion.div
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.97 }}
+                      transition={{ type: "spring", stiffness: 380, damping: 22 }}
                     >
-                      <div className="flex items-center gap-3 min-w-0">
-                        <div className="relative shrink-0">
-                          <div className="absolute inset-0 rounded-xl bg-purple-500/40 blur-md group-hover/cta:bg-purple-500/60 transition" />
-                          <div className="relative h-9 w-9 rounded-xl bg-gradient-to-br from-purple-500 to-fuchsia-500 flex items-center justify-center shadow-glow">
-                            <Play className="h-4 w-4 text-white fill-white ml-0.5" />
+                      <Link
+                        {...continueLink}
+                        className="relative flex items-center justify-between gap-3 rounded-2xl p-2.5 -m-1 overflow-hidden hover:bg-purple-50/60 transition group/cta"
+                      >
+                        {/* Shimmer sweep */}
+                        <motion.span
+                          aria-hidden
+                          className="pointer-events-none absolute inset-y-0 -left-1/3 w-1/3 bg-gradient-to-r from-transparent via-white/70 to-transparent skew-x-[-20deg]"
+                          initial={{ x: "-120%" }}
+                          animate={{ x: "420%" }}
+                          transition={{
+                            duration: 2.4,
+                            ease: "easeInOut",
+                            repeat: Infinity,
+                            repeatDelay: 2.2,
+                          }}
+                        />
+                        <div className="relative flex items-center gap-3 min-w-0">
+                          <div className="relative shrink-0">
+                            <motion.span
+                              aria-hidden
+                              className="absolute inset-0 rounded-xl bg-purple-500/50 blur-md"
+                              animate={{ opacity: [0.45, 0.85, 0.45], scale: [1, 1.08, 1] }}
+                              transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+                            />
+                            <motion.div
+                              className="relative h-9 w-9 rounded-xl bg-gradient-to-br from-purple-500 to-fuchsia-500 flex items-center justify-center shadow-glow"
+                              whileHover={{ rotate: -6 }}
+                              transition={{ type: "spring", stiffness: 300, damping: 12 }}
+                            >
+                              <Play className="h-4 w-4 text-white fill-white ml-0.5" />
+                            </motion.div>
+                          </div>
+                          <div className="min-w-0">
+                            <p className="text-[10px] uppercase tracking-wider font-bold text-purple-600 flex items-center gap-1">
+                              <motion.span
+                                animate={{ rotate: [0, 12, -8, 0], scale: [1, 1.15, 1] }}
+                                transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+                                className="inline-flex"
+                              >
+                                <Sparkles className="h-3 w-3" />
+                              </motion.span>
+                              Continue learning
+                            </p>
+                            <p className="text-xs font-semibold text-slate-700 truncate">
+                              {nextLesson?.title ?? nextChapter?.title}
+                            </p>
                           </div>
                         </div>
-                        <div className="min-w-0">
-                          <p className="text-[10px] uppercase tracking-wider font-bold text-purple-600 flex items-center gap-1">
-                            <Sparkles className="h-3 w-3" /> Continue learning
-                          </p>
-                          <p className="text-xs font-semibold text-slate-700 truncate">
-                            {nextLesson?.title ?? nextChapter?.title}
-                          </p>
-                        </div>
-                      </div>
-                      <span className="text-[11px] font-bold text-purple-600 shrink-0 group-hover/cta:translate-x-0.5 transition">
-                        Resume →
-                      </span>
-                    </Link>
-                  </div>
+                        <motion.span
+                          className="relative text-[11px] font-bold text-purple-600 shrink-0"
+                          initial={{ x: 0 }}
+                          whileHover={{ x: 3 }}
+                          transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                        >
+                          Resume →
+                        </motion.span>
+                      </Link>
+                    </motion.div>
+                  </motion.div>
                 )}
               </SoftCard>
             </motion.div>
